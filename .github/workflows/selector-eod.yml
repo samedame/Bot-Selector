@@ -1,0 +1,31 @@
+name: selector-eod
+
+# After the close: match every logged pick and alternative to the bots' own closed-trade ledgers, then post
+# the scorecard (does the selector's pick actually beat the alternatives?).
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "40 20 * * 1-5"   # 16:40 EDT
+    - cron: "40 21 * * 1-5"   # 16:40 EST
+
+concurrency:
+  group: selector-session
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  eod:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Scorecard
+        env:
+          GH_READ_TOKEN: ${{ secrets.GH_READ_TOKEN }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          SELECTOR_GIT_PUSH: "1"
+        run: python -m bot_selector eod

@@ -1,0 +1,78 @@
+name: selector-session
+
+# The live loop. Polls every bot's committed state once a minute from ~09:20 ET to 16:05 ET and posts to
+# Discord only when the pick CHANGES.
+#
+# Start-up: add the `selector-session` job to the Cloudflare `open-scheduler` Worker (see README). GitHub's
+# native schedule runs hours late on this account, so the two cron lines below are only a DST-safe backup.
+# A late start is harmless: the loop reads committed state, so it sees whatever is currently actionable.
+on:
+  workflow_dispatch:
+    inputs:
+      scheduled_for_et:
+        description: "Set by open-scheduler (ignored)"
+        required: false
+        default: ""
+      trigger:
+        description: "manual | cf-scheduler | handoff"
+        required: false
+        default: "manual"
+  schedule:
+    - cron: "25 13 * * 1-5"   # 09:25 EDT
+    - cron: "25 14 * * 1-5"   # 09:25 EST (at 10:25 EDT it joins late, which is harmless)
+
+concurrency:
+  group: selector-session
+  cancel-in-progress: false
+
+permissions:
+  contents: write   # commit state/board.json and state/decisions.jsonl
+  actions: write    # hand-off: dispatch the next run when the 6h job limit is near
+
+jobs:
+  session:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Skip a backup run that fires before 09:00 ET (wrong DST hour)
+        id: guard
+        run: |
+          HHMM=$(TZ=America/New_York date +%H%M)
+          DOW=$(TZ=America/New_York date +%u)
+          if [ "$DOW" -ge 6 ] || [ "$HHMM" -lt 0900 ] || [ "$HHMM" -ge 1605 ]; then
+            echo "outside the session ($HHMM ET, day $DOW): exiting"; echo "skip=1" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-python@v5
+        if: steps.guard.outputs.skip != '1'
+        with:
+          python-version: "3.12"
+
+      - name: Morning digest (fleet status + current board)
+        if: steps.guard.outputs.skip != '1' && inputs.trigger != 'handoff'
+        env:
+          GH_READ_TOKEN: ${{ secrets.GH_READ_TOKEN }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: python -m bot_selector digest
+
+      - name: Run the live loop
+        if: steps.guard.outputs.skip != '1'
+        env:
+          GH_READ_TOKEN: ${{ secrets.GH_READ_TOKEN }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          SELECTOR_GIT_PUSH: "1"
+          PYTHONUNBUFFERED: "1"
+        run: python -m bot_selector live --max-runtime-min 330
+
+      - name: Hand off to a fresh run if the session is not over
+        if: steps.guard.outputs.skip != '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          HHMM=$(TZ=America/New_York date +%H%M)
+          DOW=$(TZ=America/New_York date +%u)
+          if [ "$DOW" -lt 6 ] && [ "$HHMM" -lt 1600 ]; then
+            gh workflow run selector-session.yml --ref "${{ github.ref_name }}" -f trigger=handoff
+          fi
