@@ -1,0 +1,108 @@
+{
+ "2026-10-23|ENTRY|AAPL|Phase2_MiddayPin_CreditSpread|210": {
+  "late_s": 6628.3,
+  "pos": [
+   "AAPL",
+   "Phase2_MiddayPin_CreditSpread",
+   210
+  ],
+  "posted": false,
+  "t": "2026-10-23T14:51:28-04:00"
+ },
+ "2026-10-23|ENTRY|IWM|Phase1A_GapTrap_Single0DTE|31": {
+  "late_s": 6.3,
+  "pos": [
+   "IWM",
+   "Phase1A_GapTrap_Single0DTE",
+   31
+  ],
+  "posted": true,
+  "t": "2026-10-23T10:02:06-04:00"
+ },
+ "2026-10-23|ENTRY|META|Phase1A_GapTrap_Single0DTE|10": {
+  "late_s": 6.3,
+  "pos": [
+   "META",
+   "Phase1A_GapTrap_Single0DTE",
+   10
+  ],
+  "posted": true,
+  "t": "2026-10-23T09:41:06-04:00"
+ },
+ "2026-10-23|ENTRY|QQQ|Phase1C_BullTrap_PutDebitSpread|20": {
+  "late_s": 6.4,
+  "pos": [
+   "QQQ",
+   "Phase1C_BullTrap_PutDebitSpread",
+   20
+  ],
+  "posted": true,
+  "t": "2026-10-23T09:51:06-04:00"
+ },
+ "2026-10-23|ENTRY|QQQ|Phase2_MiddayPin_CreditSpread|93": {
+  "late_s": 6.3,
+  "pos": [
+   "QQQ",
+   "Phase2_MiddayPin_CreditSpread",
+   93
+  ],
+  "posted": true,
+  "t": "2026-10-23T11:04:06-04:00"
+ },
+ "2026-10-23|ENTRY|SPY|Phase1A_GapTrap_Single0DTE|22": {
+  "late_s": 6.3,
+  "pos": [
+   "SPY",
+   "Phase1A_GapTrap_Single0DTE",
+   22
+  ],
+  "posted": true,
+  "t": "2026-10-23T09:53:06-04:00"
+ },
+ "2026-10-23|ENTRY|TSLA|Phase2_MiddayPin_CreditSpread|113": {
+  "late_s": 12.7,
+  "pos": [
+   "TSLA",
+   "Phase2_MiddayPin_CreditSpread",
+   113
+  ],
+  "posted": true,
+  "t": "2026-10-23T11:24:12-04:00"
+ },
+ "2026-10-23|EXIT|IWM|Phase1A_GapTrap_Single0DTE|81": {
+  "late_s": 0.0,
+  "pos": null,
+  "posted": true,
+  "t": "2026-10-23T10:52:13-04:00"
+ },
+ "2026-10-23|EXIT|META|Phase1A_GapTrap_Single0DTE|30": {
+  "late_s": 0.0,
+  "pos": null,
+  "posted": true,
+  "t": "2026-10-23T10:01:12-04:00"
+ },
+ "2026-10-23|EXIT|QQQ|Phase1C_BullTrap_PutDebitSpread|70": {
+  "late_s": 0.0,
+  "pos": null,
+  "posted": true,
+  "t": "2026-10-23T10:41:12-04:00"
+ },
+ "2026-10-23|EXIT|QQQ|Phase2_MiddayPin_CreditSpread|173": {
+  "late_s": 0.0,
+  "pos": null,
+  "posted": true,
+  "t": "2026-10-23T12:24:12-04:00"
+ },
+ "2026-10-23|EXIT|SPY|Phase1A_GapTrap_Single0DTE|72": {
+  "late_s": 0.0,
+  "pos": null,
+  "posted": true,
+  "t": "2026-10-23T10:43:06-04:00"
+ },
+ "2026-10-23|EXIT|TSLA|Phase2_MiddayPin_CreditSpread|193": {
+  "late_s": 0.0,
+  "pos": null,
+  "posted": true,
+  "t": "2026-10-23T12:44:13-04:00"
+ }
+}

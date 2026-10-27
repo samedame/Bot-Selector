@@ -1,0 +1,91 @@
+{
+ "positions": {},
+ "history": [
+  {
+   "entry_date": "2026-09-11",
+   "signal_ibs": 0.045,
+   "bars": 9,
+   "pending": false,
+   "last_bar": "2026-09-22",
+   "sym": "IWM",
+   "exit_signal_date": "2026-09-22",
+   "reason": "close above yesterday's high"
+  },
+  {
+   "entry_date": "2026-09-23",
+   "signal_ibs": 0.0931,
+   "bars": 2,
+   "pending": false,
+   "last_bar": "2026-09-25",
+   "sym": "DIA",
+   "exit_signal_date": "2026-09-25",
+   "reason": "close above yesterday's high"
+  },
+  {
+   "entry_date": "2026-09-30",
+   "signal_ibs": 0.0622,
+   "bars": 2,
+   "pending": false,
+   "last_bar": "2026-10-05",
+   "sym": "SPY",
+   "exit_signal_date": "2026-10-06",
+   "reason": "close above yesterday's high"
+  },
+  {
+   "entry_date": "2026-09-30",
+   "signal_ibs": 0.055,
+   "bars": 2,
+   "pending": false,
+   "last_bar": "2026-10-05",
+   "sym": "QQQ",
+   "exit_signal_date": "2026-10-06",
+   "reason": "close above yesterday's high"
+  },
+  {
+   "entry_date": "2026-09-30",
+   "signal_ibs": 0.0361,
+   "bars": 3,
+   "pending": false,
+   "last_bar": "2026-10-06",
+   "sym": "DIA",
+   "exit_signal_date": "2026-10-07",
+   "reason": "close above yesterday's high"
+  },
+  {
+   "entry_date": "2026-09-23",
+   "signal_ibs": 0.0185,
+   "bars": 10,
+   "pending": false,
+   "last_bar": "2026-10-06",
+   "sym": "IWM",
+   "exit_signal_date": "2026-10-08",
+   "reason": "10 trading days held"
+  },
+  {
+   "entry_date": "2026-10-12",
+   "signal_ibs": 0.0815,
+   "bars": 3,
+   "pending": false,
+   "last_bar": "2026-10-15",
+   "sym": "IWM",
+   "exit_signal_date": "2026-10-15",
+   "reason": "close above yesterday's high"
+  },
+  {
+   "entry_date": "2026-10-16",
+   "signal_ibs": 0.0936,
+   "bars": 2,
+   "pending": false,
+   "last_bar": "2026-10-20",
+   "sym": "IWM",
+   "exit_signal_date": "2026-10-20",
+   "reason": "close above yesterday's high"
+  }
+ ],
+ "pending_exits": {},
+ "last_bar": "2026-10-26",
+ "last_evening": {
+  "bar": "2026-10-26",
+  "text": "**IBS callout bot \u2014 signals from the Mon Oct 26 close**\n\nNo action at the Tue Oct 27 open.\n\n```\nSPY: close 765.37  IBS 0.61\nQQQ: close 712.20  IBS 0.68\nIWM: close 276.99  IBS 0.36\nDIA: close 522.97  IBS 0.28\n```"
+ }
+}

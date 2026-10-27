@@ -1,0 +1,84 @@
+{
+ "open_position": {
+  "date": "2026-10-26",
+  "ticker": "SPY",
+  "signal": "range_bound_iron_condor_0dte",
+  "short_call_strike": 771.13,
+  "short_put_strike": 752.97,
+  "long_call_strike": 778.75,
+  "long_put_strike": 745.35,
+  "est_net_credit_per_contract": 129.65,
+  "spot_at_entry": 761.86,
+  "vix_at_entry": 19.030000686645508,
+  "entry_time": "2026-10-26T09:32:15-04:00",
+  "chain_quote": {
+   "mid_credit": 0.19,
+   "fresh": true,
+   "newest_trade_et": "2026-10-26T09:32:17-04:00"
+  },
+  "listed_strikes": {
+   "short_call": 771,
+   "long_call": 779,
+   "short_put": 753,
+   "long_put": 745
+  }
+ },
+ "kill_switch": {
+  "tripped": false,
+  "reason": null,
+  "tripped_at": null
+ },
+ "credit_checks": [
+  {
+   "date": "2026-10-22",
+   "kind": "chain",
+   "credit": 0.12,
+   "model_credit": 1.21,
+   "pct_of_model": 9.9,
+   "verdict": "LOW",
+   "spot_at_entry": 766.84,
+   "vix_at_entry": 18.110000610351562,
+   "strikes": [
+    750,
+    758,
+    776,
+    784
+   ],
+   "at": "2026-10-22T09:32:21-04:00"
+  },
+  {
+   "date": "2026-10-23",
+   "kind": "chain",
+   "credit": 0.27,
+   "model_credit": 1.4,
+   "pct_of_model": 19.3,
+   "verdict": "LOW",
+   "spot_at_entry": 760.46,
+   "vix_at_entry": 20.229999542236328,
+   "strikes": [
+    743,
+    751,
+    770,
+    778
+   ],
+   "at": "2026-10-23T09:32:19-04:00"
+  },
+  {
+   "date": "2026-10-26",
+   "kind": "chain",
+   "credit": 0.19,
+   "model_credit": 1.34,
+   "pct_of_model": 14.2,
+   "verdict": "LOW",
+   "spot_at_entry": 761.86,
+   "vix_at_entry": 19.030000686645508,
+   "strikes": [
+    745,
+    753,
+    771,
+    779
+   ],
+   "at": "2026-10-26T09:32:15-04:00"
+  }
+ ]
+}

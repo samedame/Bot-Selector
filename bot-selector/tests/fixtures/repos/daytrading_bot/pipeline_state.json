@@ -1,0 +1,229 @@
+{
+ "plans": {
+  "2026-10-26": {
+   "gonogo": {
+    "calendar_reasons": [],
+    "decision": "GO",
+    "evaluated_at": "2026-10-25T20:31:17-04:00",
+    "gate": {
+     "as_of_date": "2026-10-23",
+     "last_close": 759.97,
+     "margin_pct": -1.79,
+     "range_bound": true,
+     "rv20_median_prior_day": 0.0993,
+     "rv20_prior_day": 0.0975,
+     "trade_date": "2026-10-26"
+    },
+    "gate_error": null,
+    "kill_switch_tripped": false,
+    "pilot_count": 0,
+    "provisional": false,
+    "reasons": [],
+    "sent": true,
+    "sent_at": "2026-10-25T20:31:17-04:00",
+    "sent_at_clock": "6:31 PM MT",
+    "trade_date": "2026-10-26",
+    "trigger": "cf-scheduler",
+    "warnings": [
+     "economic_calendar.json only reaches 2026-12-10 (46 days out): refresh FOMC/CPI dates and next year's NYSE holidays"
+    ]
+   },
+   "staged": {
+    "collateral_text": "Needs ~$800 of free options buying power for 1 contract. Check Legend's buying power first.",
+    "decision": "GO",
+    "evaluated_at": "2026-10-26T09:16:14-04:00",
+    "flip_note": "\u2705 GO, same as last night's message.",
+    "gap_pct": 0.0,
+    "gate_text": "20-day realized vol 0.0975 vs its 20-day median 0.0993 -> below median (-1.8%), as of the Fri Oct 23 close -- THIN margin",
+    "hold_range": [
+     759.47,
+     760.12
+    ],
+    "pilot_count": 0,
+    "price_text": "**No live option quote (newest quote in the chain is -0 min old), so the model's $1.37 is a screen, NOT a price.**\nLast real quote on file (stale, trades to 9:16 AM ET 10/26): mid $0.22, not an open price.\nReal credit on your last 3 checks: $0.15 (10/21), $0.12 (10/22), $0.27 (10/23): 10% to 19% of the model's credit.\nRead Legend's mid for the four legs: under $0.10 skip it, under $0.44 is thin. If you send, report your fill (Actions > real credit check) or no exit alerts will fire.",
+    "prior_close": 759.97,
+    "prior_close_date": "2026-10-23",
+    "sent": true,
+    "sent_at": "2026-10-26T09:16:14-04:00",
+    "sent_at_clock": "7:16 AM MT",
+    "shift_table": [
+     {
+      "gap": -3,
+      "spot": 756.97,
+      "strikes": {
+       "long_call": 774,
+       "long_put": 740,
+       "short_call": 766,
+       "short_put": 748
+      }
+     },
+     {
+      "gap": -2,
+      "spot": 757.97,
+      "strikes": {
+       "long_call": 775,
+       "long_put": 741,
+       "short_call": 767,
+       "short_put": 749
+      }
+     },
+     {
+      "gap": -1,
+      "spot": 758.97,
+      "strikes": {
+       "long_call": 776,
+       "long_put": 742,
+       "short_call": 768,
+       "short_put": 750
+      }
+     },
+     {
+      "gap": 0,
+      "spot": 759.97,
+      "strikes": {
+       "long_call": 777,
+       "long_put": 743,
+       "short_call": 769,
+       "short_put": 751
+      }
+     },
+     {
+      "gap": 1,
+      "spot": 760.97,
+      "strikes": {
+       "long_call": 778,
+       "long_put": 744,
+       "short_call": 770,
+       "short_put": 752
+      }
+     },
+     {
+      "gap": 2,
+      "spot": 761.97,
+      "strikes": {
+       "long_call": 779,
+       "long_put": 745,
+       "short_call": 771,
+       "short_put": 753
+      }
+     },
+     {
+      "gap": 3,
+      "spot": 762.97,
+      "strikes": {
+       "long_call": 780,
+       "long_put": 746,
+       "short_call": 772,
+       "short_put": 754
+      }
+     }
+    ],
+    "spot": 759.97,
+    "spot_age_min": 0.0,
+    "spot_session": null,
+    "spot_source": "tradier",
+    "ticket": {
+     "collateral": 800,
+     "contracts": 1,
+     "credit": 1.37,
+     "delta": {
+      "short_call": 0.169,
+      "short_put": -0.16
+     },
+     "limit": 1.37,
+     "loss_at_stop": 2.06,
+     "max_loss": 663.0,
+     "max_profit": 137.0,
+     "model_credit": 1.37,
+     "priced_by": "model",
+     "profit_at_target": 0.68,
+     "raw": {
+      "long_call": 776.92,
+      "long_put": 743.4,
+      "short_call": 769.32,
+      "short_put": 751.0
+     },
+     "recent_real": [
+      {
+       "credit": 0.15,
+       "date": "2026-10-21",
+       "pct": 12.3
+      },
+      {
+       "credit": 0.12,
+       "date": "2026-10-22",
+       "pct": 9.9
+      },
+      {
+       "credit": 0.27,
+       "date": "2026-10-23",
+       "pct": 19.3
+      }
+     ],
+     "ref_credit": 0.15,
+     "sigma": 0.1924,
+     "spot": 759.97,
+     "stop_buyback": 3.43,
+     "strikes": {
+      "long_call": 777,
+      "long_put": 743,
+      "short_call": 769,
+      "short_put": 751
+     },
+     "target_buyback": 0.69,
+     "viable": true,
+     "width": 8
+    },
+    "trade_date": "2026-10-26",
+    "trigger": "cf-scheduler",
+    "vix": 19.24,
+    "warnings": [
+     "economic_calendar.json only reaches 2026-12-10 (45 days out): refresh FOMC/CPI dates and next year's NYSE holidays"
+    ]
+   }
+  },
+  "2026-10-27": {
+   "gonogo": {
+    "calendar_reasons": [
+     "FOMC meeting day"
+    ],
+    "decision": "NO-GO",
+    "evaluated_at": "2026-10-26T20:31:10-04:00",
+    "gate": {
+     "as_of_date": "2026-10-26",
+     "last_close": 765.37,
+     "margin_pct": -0.57,
+     "range_bound": true,
+     "rv20_median_prior_day": 0.0985,
+     "rv20_prior_day": 0.0979,
+     "trade_date": "2026-10-27"
+    },
+    "gate_error": null,
+    "kill_switch_tripped": false,
+    "pilot_count": 0,
+    "provisional": false,
+    "reasons": [
+     "FOMC meeting day"
+    ],
+    "sent": true,
+    "sent_at": "2026-10-26T20:31:10-04:00",
+    "sent_at_clock": "6:31 PM MT",
+    "trade_date": "2026-10-27",
+    "trigger": "cf-scheduler",
+    "warnings": [
+     "economic_calendar.json only reaches 2026-12-10 (45 days out): refresh FOMC/CPI dates and next year's NYSE holidays"
+    ]
+   },
+   "staged": {
+    "decision": "NO-GO",
+    "evaluated_at": "2026-10-27T09:16:16-04:00",
+    "pilot_count": 0,
+    "sent": false,
+    "sent_at": "2026-10-27T09:16:16-04:00",
+    "sent_at_clock": "7:16 AM MT",
+    "trade_date": "2026-10-27",
+    "trigger": "cf-scheduler"
+   }
+  }
+ }
+}
