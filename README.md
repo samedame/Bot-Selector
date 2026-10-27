@@ -70,8 +70,9 @@ Needs: status `live`, kind `trade`, not halted, not closed, not expired, no disq
     "fallback_message": "bot-selector did not start - no best-setup picks today"}
    ```
    The workflow also has DST-safe backup crons (13:25 / 14:25 UTC) with an ET guard.
-4. `selector-eod.yml` runs the scorecard at 16:40 ET.
-5. Manual kill: put a bot id in `state/overrides.json`, e.g. `{"halt": ["chronos"]}`. It wins over everything.
+4. **Prove the wiring:** Actions -> `selector-selftest` -> Run workflow (works any time of day). It posts one line per bot to Discord: `ok`, `skip` (superseded bots) or `FAIL` with the reason.
+5. `selector-eod.yml` runs the scorecard at 16:40 ET.
+6. Manual kill: put a bot id in `state/overrides.json`, e.g. `{"halt": ["chronos"]}`. It wins over everything.
 
 ## Commands
 
@@ -79,10 +80,11 @@ Needs: status `live`, kind `trade`, not halted, not closed, not expired, no disq
 python -m bot_selector once                     # rank right now, print only
 python -m bot_selector live                     # market-hours loop (what the workflow runs)
 python -m bot_selector digest                   # fleet status + board
+python -m bot_selector selftest                 # read every bot once, any time of day; posts ok/FAIL per bot to Discord
 python -m bot_selector eod                      # resolve outcomes, post scorecard
 python -m bot_selector scorecard
 python -m bot_selector replay --local ROOT --start 2026-10-15 --end 2026-10-27 --out state/replay.json
-python -m pytest tests -q                       # 62 tests
+python -m pytest tests -q                       # 63 tests
 ```
 
 ## Known gaps

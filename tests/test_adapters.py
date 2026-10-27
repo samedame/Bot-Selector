@@ -159,3 +159,15 @@ def test_each_bot_reads_its_own_branch(registry):
     Engine(registry, src)
     assert src.branches["samedame/robinhood-1500-options-strategy"] == "master"
     assert src.branches[registry.get("chronos").repo] == "main"
+
+
+def test_selftest_names_the_bots_it_could_not_read(registry, repos, tmp_path):
+    from bot_selector.cli import selftest_report
+    from bot_selector.engine import Engine
+    from bot_selector.sources import LocalSource
+    from conftest import et
+    good, ok = selftest_report(Engine(registry, LocalSource(repos), overrides_path=str(tmp_path / "o.json")), et("2026-10-27 10:00:00"))
+    assert ok and "chronos" in good
+    empty = tmp_path / "none"; empty.mkdir()
+    bad, ok2 = selftest_report(Engine(registry, LocalSource(str(empty)), overrides_path=str(tmp_path / "o.json")), et("2026-10-27 10:00:00"))
+    assert not ok2 and "FAIL" in bad and "READ PROBLEMS" in bad

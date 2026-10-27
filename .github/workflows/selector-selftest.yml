@@ -1,0 +1,23 @@
+name: selector-selftest
+
+# Run this by hand (Actions -> selector-selftest -> Run workflow), any time of day, to prove that
+# GH_READ_TOKEN can read every bot repo and DISCORD_WEBHOOK_URL can post. Places no picks.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  selftest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Read every bot, post the result
+        env:
+          GH_READ_TOKEN: ${{ secrets.GH_READ_TOKEN }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: python -m bot_selector selftest

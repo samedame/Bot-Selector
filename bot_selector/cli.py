@@ -3,6 +3,7 @@
   once        rank right now and print it (no Discord, no log)
   live        the market-hours loop (what the workflow runs)
   digest      post the fleet status + current board
+  selftest    read every bot once (any time of day), report which can't be read, post to Discord
   eod         resolve outcomes into the decision log, post the scorecard
   scorecard   print the scorecard from the log
   replay      re-run past sessions with no look-ahead, from checked-out repos (--local ROOT)
@@ -62,6 +63,29 @@ def cmd_once(args) -> int:
     if eng.errors:
         print("\nread problems:", json.dumps(eng.errors, indent=1))
     return 0
+
+
+def selftest_report(eng: Engine, now) -> tuple[str, bool]:
+    """Try to read every bot once and say, bot by bot, whether it worked. Works any time of day."""
+    eng.decide(now)
+    lines, ok = [], True
+    for b in eng.registry.bots.values():
+        err = eng.errors.get(b.id)
+        needed = b.status in ("live", "paper")
+        if err and needed:
+            ok = False
+        mark = "FAIL" if err and needed else ("skip" if err else "ok  ")
+        lines.append(f"{mark} {b.id:<14} {b.status:<10}" + (f" {err[:110]}" if err else ""))
+    head = "SELECTOR SELF-TEST: " + ("all live/paper bots readable" if ok else "READ PROBLEMS")
+    return head + "\n" + "\n".join(lines), ok
+
+
+def cmd_selftest(args) -> int:
+    eng = _engine(args)
+    text, ok = selftest_report(eng, now_et())
+    print(text)
+    discord.post("```\n" + text[:1850] + "\n```")
+    return 0 if ok else 1
 
 
 def cmd_live(args) -> int:
@@ -164,6 +188,7 @@ def main(argv=None) -> int:
     lv = sub.add_parser("live"); lv.add_argument("--poll", type=int, default=60)
     lv.add_argument("--max-runtime-min", type=float, default=330); lv.set_defaults(fn=cmd_live)
     sub.add_parser("digest").set_defaults(fn=cmd_digest)
+    sub.add_parser("selftest").set_defaults(fn=cmd_selftest)
     sub.add_parser("eod").set_defaults(fn=cmd_eod)
     sub.add_parser("scorecard").set_defaults(fn=cmd_scorecard)
     r = sub.add_parser("replay"); r.add_argument("--start", required=True); r.add_argument("--end", required=True)
