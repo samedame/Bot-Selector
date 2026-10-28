@@ -47,7 +47,10 @@ def _git_push_state(msg: str) -> None:
     if os.environ.get("SELECTOR_GIT_PUSH") != "1":
         return
     try:
-        subprocess.run(["git", "add", "state/board.json", "state/decisions.jsonl"], check=True, cwd=ROOT)
+        files = [f for f in ("state/board.json", "state/decisions.jsonl") if os.path.exists(os.path.join(ROOT, f))]
+        if not files:
+            return
+        subprocess.run(["git", "add", *files], check=True, cwd=ROOT)
         if subprocess.run(["git", "diff", "--staged", "--quiet"], cwd=ROOT).returncode != 0:
             subprocess.run(["git", "commit", "-m", msg], check=True, cwd=ROOT)
             subprocess.run(["git", "pull", "--rebase", "-q"], cwd=ROOT)
