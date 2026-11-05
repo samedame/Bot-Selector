@@ -18,8 +18,15 @@ on:
         required: false
         default: "manual"
   schedule:
-    - cron: "25 13 * * 1-5"   # 09:25 EDT
-    - cron: "25 14 * * 1-5"   # 09:25 EST (at 10:25 EDT it joins late, which is harmless)
+    # Backup only. GitHub has been starting these 4-7 hours late on this account (every run so far began between
+    # 15:00 and 17:30 ET), so extra lines just raise the odds that one fires earlier. The real start is the
+    # open-scheduler Worker job in the README. A run that fires outside 09:00-16:05 ET exits at once.
+    - cron: "5 13 * * 1-5"    # 09:05 EDT
+    - cron: "5 14 * * 1-5"    # 09:05 EST
+    - cron: "20 13 * * 1-5"   # 09:20 EDT
+    - cron: "20 14 * * 1-5"   # 09:20 EST
+    - cron: "35 13 * * 1-5"   # 09:35 EDT
+    - cron: "35 14 * * 1-5"   # 09:35 EST
 
 concurrency:
   group: selector-session
@@ -63,6 +70,7 @@ jobs:
           GH_READ_TOKEN: ${{ secrets.GH_READ_TOKEN }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           SELECTOR_GIT_PUSH: "1"
+          SELECTOR_HANDOFF: ${{ inputs.trigger == 'handoff' && '1' || '' }}
           PYTHONUNBUFFERED: "1"
         run: python -m bot_selector live --max-runtime-min 330
 

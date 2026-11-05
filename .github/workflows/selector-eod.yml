@@ -20,10 +20,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Skip the scorecard run that fires before the close (wrong DST hour)
+        id: guard
+        run: |
+          HHMM=$(TZ=America/New_York date +%H%M)
+          DOW=$(TZ=America/New_York date +%u)
+          # Both crons fire every weekday; one is an hour early depending on DST. Only a manual run, or one at/after
+          # 16:30 ET, should post (GitHub often starts these hours late, which is fine: the ledgers are final by then).
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "$HHMM" -ge 0600 ] && [ "$HHMM" -lt 1630 ]; then
+            echo "too early for the scorecard ($HHMM ET): exiting"; echo "skip=1" >> "$GITHUB_OUTPUT"
+          fi
+
       - uses: actions/setup-python@v5
+        if: steps.guard.outputs.skip != '1'
         with:
           python-version: "3.12"
       - name: Scorecard
+        if: steps.guard.outputs.skip != '1'
         env:
           GH_READ_TOKEN: ${{ secrets.GH_READ_TOKEN }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}

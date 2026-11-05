@@ -84,10 +84,13 @@ python -m bot_selector selftest                 # read every bot once, any time 
 python -m bot_selector eod                      # resolve outcomes, post scorecard
 python -m bot_selector scorecard
 python -m bot_selector replay --local ROOT --start 2026-10-15 --end 2026-10-27 --out state/replay.json
-python -m pytest tests -q                       # 63 tests
+python -m pytest tests -q                       # 70 tests
 ```
 
 ## Known gaps
+
+- **THE SCHEDULER JOB MUST EXIST (setup step 3).** As of 2026-11-04 no run has ever been started by the `open-scheduler` Worker: every `selector-session` run was GitHub's own backup cron, starting between 15:00 and 17:30 ET, so the selector has never watched a morning session. If it starts after 09:45 ET it now posts `SELECTOR STARTED LATE` to Discord. That message means the Worker job is missing or not firing.
+- **Failures are loud now.** The loop logs every poll to the Actions log, posts `SELECTOR READ PROBLEM` to Discord when a live/paper bot can't be read (once per distinct problem), survives a Discord outage (it retries the post next poll instead of crashing), and commits state with a bot identity. Before 2026-11-04 the end-of-session commit failed with "Author identity unknown", so `state/board.json` and `state/decisions.jsonl` were never saved and the EOD scorecard had nothing to score.
 
 - **The GitHub reader was not exercised against the live API.** The build sandbox got `403` from api.github.com, so `GitHubSource` is covered by unit tests only. First run: check `bot-errors` / the board file's `errors` for read failures. A missing required file is raised as an error on purpose; it never looks like a quiet day.
 - Sizing / account capital is not scored (the selector can't see per-alert cost), only 0-contract disqualification.

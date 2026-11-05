@@ -43,18 +43,29 @@ def _store(args) -> Store:
     return Store(getattr(args, "state", None) or os.path.join(ROOT, "state"))
 
 
+GIT_IDENT = {"GIT_AUTHOR_NAME": "bot-selector", "GIT_AUTHOR_EMAIL": "bot-selector@users.noreply.github.com",
+             "GIT_COMMITTER_NAME": "bot-selector", "GIT_COMMITTER_EMAIL": "bot-selector@users.noreply.github.com"}
+
+
 def _git_push_state(msg: str) -> None:
+    """Commit state/board.json + state/decisions.jsonl. Needs an identity: a fresh Actions runner has none, and
+    every commit (and every `pull --rebase`) used to die with 'Author identity unknown', so nothing was ever saved."""
     if os.environ.get("SELECTOR_GIT_PUSH") != "1":
         return
+    env = {**os.environ, **{k: v for k, v in GIT_IDENT.items() if not os.environ.get(k)}}
     try:
         files = [f for f in ("state/board.json", "state/decisions.jsonl") if os.path.exists(os.path.join(ROOT, f))]
         if not files:
             return
-        subprocess.run(["git", "add", *files], check=True, cwd=ROOT)
-        if subprocess.run(["git", "diff", "--staged", "--quiet"], cwd=ROOT).returncode != 0:
-            subprocess.run(["git", "commit", "-m", msg], check=True, cwd=ROOT)
-            subprocess.run(["git", "pull", "--rebase", "-q"], cwd=ROOT)
-            subprocess.run(["git", "push", "-q"], check=True, cwd=ROOT)
+        subprocess.run(["git", "add", *files], check=True, cwd=ROOT, env=env)
+        if subprocess.run(["git", "diff", "--staged", "--quiet"], cwd=ROOT, env=env).returncode != 0:
+            subprocess.run(["git", "commit", "-m", msg], check=True, cwd=ROOT, env=env)
+            for attempt in range(3):
+                subprocess.run(["git", "pull", "--rebase", "--autostash", "-q"], cwd=ROOT, env=env)
+                if subprocess.run(["git", "push", "-q"], cwd=ROOT, env=env).returncode == 0:
+                    break
+            else:
+                raise subprocess.CalledProcessError(1, "git push (3 attempts)")
     except subprocess.CalledProcessError as e:
         print(f"[git] state push failed (non-fatal): {e}", file=sys.stderr)
 
@@ -91,10 +102,33 @@ def cmd_selftest(args) -> int:
     return 0 if ok else 1
 
 
+LATE_AFTER = dtime(9, 45)
+
+
+def late_start_notice(now) -> "str | None":
+    """The scheduler is supposed to start the session at ~09:20 ET. If it did not, say so out loud instead of
+    letting a silent channel look like 'no trades today'. Hand-off runs (a continuation) never trigger this."""
+    if os.environ.get("SELECTOR_HANDOFF") == "1" or now.weekday() >= 5:
+        return None
+    if LATE_AFTER <= now.time() < dtime(16, 0):
+        return (f"SELECTOR STARTED LATE at {now:%H:%M} ET - any alert that fired and expired before this was NOT seen. "
+                "The open-scheduler job for selector-session is missing or not firing; GitHub's own backup cron "
+                "is running hours late.")
+    return None
+
+
 def cmd_live(args) -> int:
     eng, store = _engine(args), _store(args)
+    notice = late_start_notice(now_et())
+    if notice:
+        print(notice)
+        try:
+            discord.post(notice)
+        except Exception as e:  # noqa: BLE001
+            print(f"[discord] late-start notice failed: {e}", file=sys.stderr)
     steps = run_live(eng, store, post=discord.post, poll_s=args.poll, max_runtime_min=args.max_runtime_min,
-                     on_change=lambda: _git_push_state("selector: pick changed"))
+                     on_change=lambda: _git_push_state("selector: pick changed"),
+                     alert=discord.post, log=lambda m: print(m, flush=True))
     if isinstance(eng.src, GitHubSource):
         eng.src.save_cache()
     print(f"live loop finished after {steps} polls")
@@ -112,8 +146,17 @@ def cmd_digest(args) -> int:
 def _resolve(eng: Engine, store: Store) -> tuple[list[dict], dict]:
     decisions = store.read_decisions()
     # use full ledgers here: outcomes of past decisions are exactly what we want to read
-    hists = {b.id: __import__("bot_selector.adapters", fromlist=["history_for"]).history_for(b, eng.src)
-             for b in eng.registry.bots.values() if b.adapter in ("apex", "omega")}
+    from .adapters import history_for
+    from .sources import SourceError
+    hists = {}
+    for b in eng.registry.bots.values():
+        if b.adapter not in ("apex", "omega"):
+            continue
+        try:
+            hists[b.id] = history_for(b, eng.src)
+        except (SourceError, KeyError, ValueError, TypeError) as e:
+            # one unreadable ledger must not sink the whole scorecard; its decisions just stay unresolved
+            print(f"[eod] could not read {b.id} ledger: {e}", file=sys.stderr)
     attach_outcomes(decisions, hists)
     store.rewrite_decisions(decisions)
     return decisions, scorecard(decisions)
