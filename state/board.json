@@ -2,7 +2,7 @@
  "errors": {
   "shadow": "samedame/shadow_bot/shadow_state_export.json not found (wrong path, wrong branch, or no read access)"
  },
- "pick_bot": null,
- "pick_key": null,
- "pick_ts": "2026-11-06T11:27:40.513320-05:00"
+ "pick_bot": "sniper",
+ "pick_key": "2026-11-06|ENTRY|ORCL|A1_PowerBrk_180m|187|C",
+ "pick_ts": "2026-11-06T12:38:46.287037-05:00"
 }
