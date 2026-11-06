@@ -2,7 +2,7 @@
  "errors": {
   "shadow": "samedame/shadow_bot/shadow_state_export.json not found (wrong path, wrong branch, or no read access)"
  },
- "pick_bot": null,
- "pick_key": null,
- "pick_ts": "2026-11-05T12:46:52.380921-05:00"
+ "pick_bot": "ibs",
+ "pick_key": "ibs|2026-11-05|SPY",
+ "pick_ts": "2026-11-06T09:21:00.380291-05:00"
 }
