@@ -84,3 +84,11 @@ jobs:
           if [ "$DOW" -lt 6 ] && [ "$HHMM" -lt 1600 ]; then
             gh workflow run selector-session.yml --ref "${{ github.ref_name }}" -f trigger=handoff
           fi
+
+      # A job that crashes posts nothing, and "no alert" looks exactly like "no signal". Best effort, never fails the run.
+      - name: Tell Discord if this run failed
+        if: failure()
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: python notify_failure.py "Bot Selector session"
