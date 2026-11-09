@@ -2,7 +2,7 @@
  "errors": {
   "shadow": "samedame/shadow_bot/shadow_state_export.json not found (wrong path, wrong branch, or no read access)"
  },
- "pick_bot": null,
- "pick_key": null,
- "pick_ts": "2026-11-06T12:42:58.739454-05:00"
+ "pick_bot": "chronos",
+ "pick_key": "2026-11-09|ENTRY|MSFT|Phase1A_GapTrap_Single0DTE|6",
+ "pick_ts": "2026-11-09T09:37:19.127365-05:00"
 }
