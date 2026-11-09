@@ -2,7 +2,7 @@
  "errors": {
   "shadow": "samedame/shadow_bot/shadow_state_export.json not found (wrong path, wrong branch, or no read access)"
  },
- "pick_bot": "chronos",
- "pick_key": "2026-11-09|ENTRY|NVDA|Phase2_MiddayPin_CreditSpread|90",
- "pick_ts": "2026-11-09T11:01:42.458873-05:00"
+ "pick_bot": null,
+ "pick_key": null,
+ "pick_ts": "2026-11-09T11:06:56.173237-05:00"
 }
