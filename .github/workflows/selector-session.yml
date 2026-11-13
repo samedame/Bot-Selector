@@ -17,16 +17,17 @@ on:
         description: "manual | cf-scheduler | handoff"
         required: false
         default: "manual"
-  schedule:
-    # Backup only. GitHub has been starting these 4-7 hours late on this account (every run so far began between
-    # 15:00 and 17:30 ET), so extra lines just raise the odds that one fires earlier. The real start is the
-    # open-scheduler Worker job in the README. A run that fires outside 09:00-16:05 ET exits at once.
-    - cron: "5 13 * * 1-5"    # 09:05 EDT
-    - cron: "5 14 * * 1-5"    # 09:05 EST
-    - cron: "20 13 * * 1-5"   # 09:20 EDT
-    - cron: "20 14 * * 1-5"   # 09:20 EST
-    - cron: "35 13 * * 1-5"   # 09:35 EDT
-    - cron: "35 14 * * 1-5"   # 09:35 EST
+  # DISABLED (session burned ~42% of private Actions minutes; no demonstrated value): schedule removed (fleet scan). Re-enable by restoring the block below.
+  # schedule:
+  #   # Backup only. GitHub has been starting these 4-7 hours late on this account (every run so far began between
+  #   # 15:00 and 17:30 ET), so extra lines just raise the odds that one fires earlier. The real start is the
+  #   # open-scheduler Worker job in the README. A run that fires outside 09:00-16:05 ET exits at once.
+  #   - cron: "5 13 * * 1-5"    # 09:05 EDT
+  #   - cron: "5 14 * * 1-5"    # 09:05 EST
+  #   - cron: "20 13 * * 1-5"   # 09:20 EDT
+  #   - cron: "20 14 * * 1-5"   # 09:20 EST
+  #   - cron: "35 13 * * 1-5"   # 09:35 EDT
+  #   - cron: "35 14 * * 1-5"   # 09:35 EST
 
 concurrency:
   group: selector-session
@@ -38,6 +39,7 @@ permissions:
 
 jobs:
   session:
+    if: ${{ vars.SELECTOR_SESSION_ENABLED == 'true' }}   # off-switch: set this repo variable to 'true' to run (also blocks Worker dispatches)
     runs-on: ubuntu-latest
     timeout-minutes: 350
     steps:
