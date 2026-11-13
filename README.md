@@ -97,3 +97,7 @@ python -m pytest tests -q                       # 70 tests
 - Scanner is unreadable; Omega, FRONTIER-5 and momentum are not pickable.
 - GitHub Actions session limit is 6h; the loop hands off, and stops at 16:05 ET.
 - Branch is per bot (`branch` in `bots.json`, default `main`; dipcalls repo uses `master`).
+
+## Session turned off (2026-11-13)
+
+`selector-session` is OFF by default. The live loop used about 42% of the account's private Actions minutes (1,805 of ~4,260, 1-12 Nov) and its own replay found no value (n=5, pick 29 points worse than the alternatives, CI includes zero). The six native cron lines are commented out and the job needs the repository variable `SELECTOR_SESSION_ENABLED=true`, which also blocks the Cloudflare Worker's dispatch. `selector-eod` (the scorecard) is unchanged. Remove the `selector-session` job from the Worker table when convenient.
