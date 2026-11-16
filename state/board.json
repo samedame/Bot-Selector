@@ -1,8 +1,6 @@
 {
- "errors": {
-  "shadow": "samedame/shadow_bot/shadow_state_export.json not found (wrong path, wrong branch, or no read access)"
- },
- "pick_bot": null,
- "pick_key": null,
- "pick_ts": "2026-11-12T12:27:36.669792-05:00"
+ "errors": {},
+ "pick_bot": "chronos",
+ "pick_key": "2026-11-16|ENTRY|AAPL|Phase2_MiddayPin_CreditSpread|161",
+ "pick_ts": "2026-11-16T12:12:43.379771-05:00"
 }
